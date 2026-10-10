@@ -1,0 +1,56 @@
+// Version: 1.0.0
+type AssetMetricEntry__946000063 = {date : Text; value : Float};
+type ContactInfo__110675407 = {address : Text; email : Text; phone : Text};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Int__270357528 = Int__616954475;
+type Int__616954475 = Int;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PreciousMetal__419571809 = {ratePerGram : Float; weightGrams : Float};
+type ShareValueEntry__518895877 =
+  {date : Text; shareAmount : Float; shareholderName : Text};
+type Time__796480547 = Int__270357528;
+type Time__900049286 = Time__796480547;
+type UserProfile__491224006 = {name : Text; username : Text};
+type UserRole__1054455867 = {#admin; #guest; #user};
+actor {
+  stable var aboutPageContent : {description : Text};
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable var assetMetrics : [AssetMetricEntry__946000063];
+  stable var assets :
+    {
+      bank : Float;
+      cash : Float;
+      gold : PreciousMetal__419571809;
+      silver : PreciousMetal__419571809
+    };
+  stable var bankInfo :
+    {
+      contact : ContactInfo__110675407;
+      foundingDate : Time__900049286;
+      name : Text
+    };
+  stable var shareValueHistory : [ShareValueEntry__518895877];
+  stable var shareholders : [{name : Text; ownershipPercentage : Float}];
+  stable userProfiles :
+    {
+      var root : Node__46230540<Principal, UserProfile__491224006>;
+      var size : Nat__490723111
+    };
+  stable var yearlySavings :
+    [{cash : Float; gold : Float; silver : Float; total : Float; year : Nat}]
+};

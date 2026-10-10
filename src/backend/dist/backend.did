@@ -1,0 +1,113 @@
+type YearlySaving = 
+ record {
+   cash: float64;
+   gold: float64;
+   silver: float64;
+   total: float64;
+   year: nat;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfile = 
+ record {
+   name: text;
+   username: text;
+ };
+type Time = int;
+type Shareholder = 
+ record {
+   name: text;
+   ownershipPercentage: float64;
+ };
+type ShareValueEntry = 
+ record {
+   date: text;
+   shareAmount: float64;
+   shareholderName: text;
+ };
+type PreciousMetal = 
+ record {
+   ratePerGram: float64;
+   weightGrams: float64;
+ };
+type HomePageData = 
+ record {
+   assetBreakdown: AssetCategory;
+   totalAssets: float64;
+ };
+type ContactInfo = 
+ record {
+   address: text;
+   email: text;
+   phone: text;
+ };
+type BankInfo = 
+ record {
+   contact: ContactInfo;
+   foundingDate: Time;
+   name: text;
+ };
+type AssetMetricEntry = 
+ record {
+   date: text;
+   value: float64;
+ };
+type AssetCategory = 
+ record {
+   bank: float64;
+   cash: float64;
+   gold: PreciousMetal;
+   silver: PreciousMetal;
+ };
+type AboutPageContent = record {description: text;};
+service : {
+  _initializeAccessControl: () -> ();
+  addAssetMetric: (entryDate: text, entryValue: float64) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  addShareValueEntry: (entry: ShareValueEntry) -> ();
+  addYearlySaving: (newSaving: YearlySaving) -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  deleteAssetMetric: (entryDate: text) -> (variant {
+                                             err: text;
+                                             ok;
+                                           });
+  deleteShareValueEntry: (date: text, shareholderName: text) -> (bool);
+  deleteYearlySaving: (year: nat) -> ();
+  getAboutPageContent: () -> (AboutPageContent) query;
+  getAllYearlySavings: () -> (vec YearlySaving) query;
+  getAssetCategoryBreakdown: () -> (vec record {
+                                          text;
+                                          float64;
+                                        }) query;
+  getAssetMetrics: () -> (vec AssetMetricEntry) query;
+  getBankInfo: () -> (BankInfo) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getContactInfo: () -> (ContactInfo) query;
+  getHomePageData: () -> (HomePageData) query;
+  getShareValueHistory: () -> (vec ShareValueEntry) query;
+  getShareholders: () -> (vec Shareholder) query;
+  getUserProfile: (user: principal) -> (opt UserProfile) query;
+  getYearsOfOperation: () -> (int) query;
+  isCallerAdmin: () -> (bool) query;
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  updateAboutPageContent: (newContent: AboutPageContent) -> ();
+  updateAssetMetric: (oldDate: text, newDate: text, newValue: float64) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  updateAssets: (newAssets: AssetCategory) -> ();
+  updateContactInfo: (newContact: ContactInfo) -> ();
+  updateShareValueEntry: (date: text, shareholderName: text, newAmount:
+   float64) -> (bool);
+  updateShareholders: (newShareholders: vec Shareholder) -> ();
+  updateYearlySaving: (year: nat, updatedSaving: YearlySaving) -> ();
+}
